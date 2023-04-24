@@ -1,0 +1,25 @@
+﻿<button type="submit" disabled style="display: none" aria-hidden="true"></button>
+<TelerikButton Rounded="@(ThemeConstants.Button.Rounded.Large)"
+               ButtonType="@ButtonType.Button"
+               ThemeColor="@(ThemeConstants.Button.ThemeColor.Primary)"
+               Class="@Class">
+  @{
+    if (!string.IsNullOrWhiteSpace(Icon)) {
+      <span class="@Icon me-1"></span>
+    }
+  }
+  @Caption
+</TelerikButton>
+
+@code {
+
+  [Parameter]
+  public string Caption { get; set; } = "";
+
+  [Parameter]
+  public string Icon { get; set; } = "";
+
+  [Parameter]
+  public string Class { get; set; } = "";
+
+}

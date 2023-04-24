@@ -1,0 +1,75 @@
+﻿@page "/1"
+@using System.Collections.ObjectModel
+@using static TelerikWindowPlay.Data.DataService;
+
+<PageTitle>Layout 2</PageTitle>
+
+<TelerikToolBar Adaptive="false">
+  <ToolBarButton OnClick="@(() => _customerListWindowVisible = true)">
+    <span class="@IconsHelper.Users me-1"></span> Customers
+  </ToolBarButton>
+  <ToolBarButton OnClick="@(() => _charityListWindowVisible = true)">
+    <span class="@IconsHelper.HandHoldingHeart me-1"></span> Charities
+  </ToolBarButton>
+</TelerikToolBar>
+
+<h2>@_customers.Count customer window(s) open</h2>
+
+<TelerikWindow Visible="@_customerListWindowVisible" Width="450px">
+  <WindowActions>
+    <WindowAction Name="Close" OnClick="@(() => _customerListWindowVisible = false)" />
+  </WindowActions>
+  <WindowTitle>Customers</WindowTitle>
+  <WindowContent>
+    <TelerikGrid Data="@Customers"
+                 Pageable="true"
+                 PageSize="15"
+                 OnRowClick="CustomerSelected">
+      <GridColumns>
+        <TextGridColumn Field="@nameof(Customer.Surname)" Width="200px" />
+        <TextGridColumn Field="@nameof(Customer.Salutation)" Width="200px" />
+      </GridColumns>
+    </TelerikGrid>
+  </WindowContent>
+</TelerikWindow>
+
+@foreach (Customer c in _customers) {
+  <TelerikWindow Visible="c.Visible">
+    <WindowActions>
+      <WindowAction Name="Close" OnClick="@(() => _customers.Remove(c))" />
+    </WindowActions>
+    <WindowTitle>@c.Salutation @c.Surname</WindowTitle>
+    <WindowContent>
+      Add details for @c.Salutation @c.Surname
+    </WindowContent>
+  </TelerikWindow>
+}
+
+<TelerikWindow Visible="@_charityListWindowVisible">
+  <WindowActions>
+    <WindowAction Name="Close" OnClick="@(() => _charityListWindowVisible = false)" />
+  </WindowActions>
+  <WindowTitle>Charities</WindowTitle>
+  <WindowContent>
+    <p>TODO AYS - Charity list</p>
+  </WindowContent>
+</TelerikWindow>
+
+@code {
+
+  private bool _customerListWindowVisible;
+  private bool _charityListWindowVisible;
+
+  private readonly ObservableCollection<Customer> _customers = new();
+  private async Task CustomerSelected(GridRowClickEventArgs args) {
+    Customer customer = args.Item as Customer ?? new(-1, "", "");
+    if (_customers.All(c => c.Id != customer.Id)) {
+      _customers.Add(customer);
+    }
+    customer.Visible = false;
+    // Get customer detail from the database
+    await Task.Delay(100);
+    customer.Visible = true;
+  }
+
+}

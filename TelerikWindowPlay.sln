@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelerikWindowPlay", "TelerikWindowPlay\TelerikWindowPlay.csproj", "{6C2A0C27-0236-4672-89FE-B4CDF08C4776}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C2A0C27-0236-4672-89FE-B4CDF08C4776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C2A0C27-0236-4672-89FE-B4CDF08C4776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C2A0C27-0236-4672-89FE-B4CDF08C4776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C2A0C27-0236-4672-89FE-B4CDF08C4776}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C9EC81C-752C-4381-B95D-E6E892E38AEA}
+	EndGlobalSection
+EndGlobal

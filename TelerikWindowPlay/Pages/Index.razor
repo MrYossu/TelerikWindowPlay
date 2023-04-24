@@ -1,0 +1,60 @@
+﻿@page "/"
+@inject NavigationManager NavMan;
+
+<PageTitle>Safyr inspires Prototype layouts</PageTitle>
+
+<h1>Safyr inspires Prototype layouts</h1>
+
+<div class="card-wrapper">
+  <TelerikCard Width="250px" Class="">
+    <CardHeader Class="k-hbox">
+      <div>
+        <CardTitle>Layout 1</CardTitle>
+        <CardSubTitle>Toolbar with list windows</CardSubTitle>
+      </div>
+    </CardHeader>
+    <div class="mb-1">
+      <TelerikSkeleton ShapeType="@SkeletonShapeType.Rectangle" AnimationType="SkeletonAnimationType.None" Width="250px" Height="30px" />
+    </div>
+    <div>
+      <TelerikSkeleton ShapeType="@SkeletonShapeType.Rectangle" AnimationType="SkeletonAnimationType.None" Width="100px" Height="80px" Class="mx-auto"/>
+    </div>
+    <CardActions Class="justify-space-between">
+      <TelerikButton Rounded="@(ThemeConstants.Button.Rounded.Small)" ButtonType="@ButtonType.Button" ThemeColor="@(ThemeConstants.Button.ThemeColor.Primary)" OnClick="@(()=>NavMan.NavigateTo("/1"))" Class="mx-auto">Click here to view</TelerikButton>
+    </CardActions>
+  </TelerikCard>
+
+  <TelerikCard Width="250px" Class="">
+    <CardHeader Class="k-hbox">
+      <div>
+        <CardTitle>Layout 2</CardTitle>
+        <CardSubTitle>Lists on left</CardSubTitle>
+      </div>
+    </CardHeader>
+    <div class="mb-1">
+      <TelerikSkeleton ShapeType="@SkeletonShapeType.Rectangle" AnimationType="SkeletonAnimationType.None" Width="250px" Height="30px" />
+    </div>
+    <div>
+      <TelerikSkeleton ShapeType="@SkeletonShapeType.Rectangle" AnimationType="SkeletonAnimationType.None" Width="100px" Height="80px" Class="mx-auto" />
+    </div>
+    <CardActions Class="justify-space-between">
+      <TelerikButton Rounded="@(ThemeConstants.Button.Rounded.Small)" ButtonType="@ButtonType.Button" ThemeColor="@(ThemeConstants.Button.ThemeColor.Primary)" OnClick="@(()=>NavMan.NavigateTo("/2"))" Class="mx-auto">Click here to view</TelerikButton>
+    </CardActions>
+  </TelerikCard>
+
+</div>
+<style>
+  .card-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+  }
+
+  .justify-space-between {
+    justify-content: space-between;
+  }
+
+  .post-likes-count {
+    align-self: center;
+  }
+</style>
