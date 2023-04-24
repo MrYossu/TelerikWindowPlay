@@ -85,28 +85,6 @@ public static class DataService {
 
   #endregion
 
-  #region Customers
-
-  public class Customer : BaseEntity {
-    public Customer(int id, string firstName, string surname, string email, string address, string city, string postcode) {
-      Id = id;
-      FirstName = firstName;
-      Surname = surname;
-      Email = email;
-      Address = address;
-      City = city;
-      Postcode = postcode;
-    }
-
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string Surname { get; set; }
-    public string Email { get; set; }
-    public string Address { get; set; }
-    public string City { get; set; }
-    public string Postcode { get; set; }
-  }
-
   public static List<Customer> Customers = new() {
     new(1, "Bianka", "Lehner", "Samson_Schmidt0@yahoo.com", "647 Oren Heights Apt. 902", "Robbiechester", "85108"),
     new(2, "Jeramy", "Welch", "Dulce19@gmail.com", "9952 Swaniawski Parks Apt. 524", "Howellstad", "21307"),
@@ -209,6 +187,4 @@ public static class DataService {
     new(99, "Carson", "Braun", "Cristobal.Nienow99@yahoo.com", "76498 Wiley Crescent Apt. 259", "West Novaton", "01325-4159"),
     new(100, "Lea", "McGlynn", "Cletus3@gmail.com", "996 Sidney Knoll Suite 772", "Emmanuelmouth", "52997-2537"),
   };
-
-  #endregion
 }

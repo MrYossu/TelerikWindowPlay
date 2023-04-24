@@ -1,6 +1,7 @@
 ﻿@page "/1"
-@using System.Collections.ObjectModel
 @using static TelerikWindowPlay.Data.DataService;
+@using Pixata.Extensions
+@using System.Collections.ObjectModel
 
 <PageTitle>Layout 2</PageTitle>
 
@@ -13,7 +14,7 @@
   </ToolBarButton>
 </TelerikToolBar>
 
-<h2>@_customers.Count customer window(s) open</h2>
+<h2>@_customerWindows.Count customer window(s) open</h2>
 
 <TelerikWindow Visible="@_customerListWindowVisible" Width="450px">
   <WindowActions>
@@ -21,7 +22,7 @@
   </WindowActions>
   <WindowTitle>Customers</WindowTitle>
   <WindowContent>
-    <TelerikGrid Data="@Customers.OrderBy(c => c.Surname).ThenBy(c => c.FirstName)"
+    <TelerikGrid Data="@_customers"
                  Pageable="true"
                  PageSize="15"
                  OnRowClick="CustomerSelected">
@@ -33,10 +34,10 @@
   </WindowContent>
 </TelerikWindow>
 
-@foreach (Customer c in _customers) {
+@foreach (CustomerDisplay c in _customerWindows) {
   <TelerikWindow Visible="c.Visible">
     <WindowActions>
-      <WindowAction Name="Close" OnClick="@(() => _customers.Remove(c))" />
+      <WindowAction Name="Close" OnClick="@(() => _customerWindows.Remove(c))" />
     </WindowActions>
     <WindowTitle>@c.FirstName @c.Surname</WindowTitle>
     <WindowContent>
@@ -77,14 +78,21 @@
   private bool _customerListWindowVisible;
   private bool _charityListWindowVisible;
 
-  private readonly ObservableCollection<Customer> _customers = new();
+  private readonly ObservableCollection<CustomerDisplay> _customers = Customers
+    .Select(c => new CustomerDisplay(c.Id, c.FirstName, c.Surname, c.Email, c.Address, c.City, c.Postcode))
+    .OrderBy(c => c.Surname)
+    .ThenBy(c => c.FirstName)
+    .ToObservableCollection();
+
+  private readonly ObservableCollection<CustomerDisplay> _customerWindows = new();
+
   private async Task CustomerSelected(GridRowClickEventArgs args) {
-    Customer customer = args.Item as Customer ?? new(-1, "", "", "", "", "", "");
-    if (_customers.All(c => c.Id != customer.Id)) {
-      _customers.Add(customer);
+    CustomerDisplay customer = args.Item as CustomerDisplay ?? new(-1, "", "", "", "", "", "");
+    if (_customerWindows.All(c => c.Id != customer.Id)) {
+      _customerWindows.Add(customer);
     }
     customer.Visible = false;
-    // Get customer detail from the database
+  // Get customer detail from the database
     await Task.Delay(100);
     customer.Visible = true;
   }
