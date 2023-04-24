@@ -1,5 +1,62 @@
 ﻿@page "/2"
+@using static TelerikWindowPlay.Data.DataService;
+@using System.Collections.ObjectModel
+@using Pixata.Extensions
 
 <PageTitle>Layout 2</PageTitle>
 
-<h2>TODO AYS - Add an expander panel on the left with the main lists. Clicking a charity or customer would open that in another window</h2>
+<TelerikSplitter Width="100%" Height="100%" Orientation="SplitterOrientation.Horizontal">
+  <SplitterPanes>
+    <SplitterPane Size="450px" Collapsible="false">
+      
+      <TelerikSplitter Orientation="SplitterOrientation.Vertical">
+        <SplitterPanes>
+          <SplitterPane>
+            <h2>Customers</h2>
+            <TelerikGrid Data="@_customers"
+                         Pageable="true"
+                         PageSize="15">
+              <GridColumns>
+                <TextGridColumn Field="@nameof(CustomerDisplay.FirstName)" Width="200px" />
+                <TextGridColumn Field="@nameof(CustomerDisplay.Surname)" Width="200px" />
+              </GridColumns>
+            </TelerikGrid>
+          </SplitterPane>
+          <SplitterPane>
+            <h2>Charities</h2>
+            <TelerikGrid Data="@_charities"
+                         Pageable="true"
+                         PageSize="15">
+              <GridColumns>
+                <TextGridColumn Field="@nameof(CharityDisplay.Name)" Width="300px" />
+                <TextGridColumn Field="@nameof(CharityDisplay.Number)" Width="200px" />
+              </GridColumns>
+            </TelerikGrid>
+          </SplitterPane>
+        </SplitterPanes>
+      </TelerikSplitter>
+    </SplitterPane>
+
+    <SplitterPane Collapsible="false">
+      <div class="pane-content">
+        <h3>Child windows area</h3>
+        <p>TODO - When you click on an item in one of the lists on the left, a details window should appear in this section.</p>
+      </div>
+    </SplitterPane>
+  </SplitterPanes>
+</TelerikSplitter>
+
+@code {
+
+  private readonly ObservableCollection<CustomerDisplay> _customers = Customers
+    .Select(c => new CustomerDisplay(c.Id, c.FirstName, c.Surname, c.Email, c.Address, c.City, c.Postcode))
+    .OrderBy(c => c.Surname)
+    .ThenBy(c => c.FirstName)
+    .ToObservableCollection();
+
+  private readonly ObservableCollection<CharityDisplay> _charities = Charities
+    .Select(c => new CharityDisplay(c.Id, c.Name, c.Number, c.Address, c.City, c.Postcode))
+    .OrderBy(c => c.Name)
+    .ToObservableCollection();
+
+}
