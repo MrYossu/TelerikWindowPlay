@@ -21,13 +21,13 @@
   </WindowActions>
   <WindowTitle>Customers</WindowTitle>
   <WindowContent>
-    <TelerikGrid Data="@Customers"
+    <TelerikGrid Data="@Customers.OrderBy(c => c.Surname).ThenBy(c => c.FirstName)"
                  Pageable="true"
                  PageSize="15"
                  OnRowClick="CustomerSelected">
       <GridColumns>
+        <TextGridColumn Field="@nameof(Customer.FirstName)" Width="200px" />
         <TextGridColumn Field="@nameof(Customer.Surname)" Width="200px" />
-        <TextGridColumn Field="@nameof(Customer.Salutation)" Width="200px" />
       </GridColumns>
     </TelerikGrid>
   </WindowContent>
@@ -38,9 +38,26 @@
     <WindowActions>
       <WindowAction Name="Close" OnClick="@(() => _customers.Remove(c))" />
     </WindowActions>
-    <WindowTitle>@c.Salutation @c.Surname</WindowTitle>
+    <WindowTitle>@c.FirstName @c.Surname</WindowTitle>
     <WindowContent>
-      Add details for @c.Salutation @c.Surname
+      <table>
+        <tr>
+          <th>Email</th>
+          <td>@c.Email</td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>@c.Address</td>
+        </tr>
+        <tr>
+          <th>City</th>
+          <td>@c.City</td>
+        </tr>
+        <tr>
+          <th>Postcode</th>
+          <td>@c.Postcode</td>
+        </tr>
+      </table>
     </WindowContent>
   </TelerikWindow>
 }
@@ -62,7 +79,7 @@
 
   private readonly ObservableCollection<Customer> _customers = new();
   private async Task CustomerSelected(GridRowClickEventArgs args) {
-    Customer customer = args.Item as Customer ?? new(-1, "", "");
+    Customer customer = args.Item as Customer ?? new(-1, "", "", "", "", "", "");
     if (_customers.All(c => c.Id != customer.Id)) {
       _customers.Add(customer);
     }
