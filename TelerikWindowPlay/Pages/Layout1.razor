@@ -3,22 +3,28 @@
 @using Pixata.Extensions
 @using System.Collections.ObjectModel
 
-<PageTitle>Layout 2</PageTitle>
+<PageTitle>Layout 1</PageTitle>
 
 <TelerikToolBar Adaptive="false">
-  <ToolBarButton OnClick="@(() => _customerListWindowVisible = true)">
+  <ToolBarButton OnClick="@(async () => {
+                            _customerListWindowVisible = false;
+                            await Task.Delay(1);
+                            _customerListWindowVisible = true;
+                          })">
     <span class="@IconsHelper.Users me-1"></span> Customers
   </ToolBarButton>
-  <ToolBarButton OnClick="@(() => _charityListWindowVisible = true)">
+  <ToolBarButton OnClick="@(async () => {
+                            _charityListWindowVisible = false; 
+                            await Task.Delay(1);
+                            _charityListWindowVisible = true;
+                          })">
     <span class="@IconsHelper.HandHoldingHeart me-1"></span> Charities
   </ToolBarButton>
 </TelerikToolBar>
 
-<h2>@_customerWindows.Count customer window(s) open</h2>
-
-<TelerikWindow Visible="@_customerListWindowVisible" Width="450px">
+<TelerikWindow Visible="@_customerListWindowVisible" Width="450px" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary" Top="60px" Left="30px">
   <WindowActions>
-    <WindowAction Name="Close" OnClick="@(() => _customerListWindowVisible = false)" />
+    <WindowAction Name="Close" OnClick="@(() => { _customerListWindowVisible = false; })" />
   </WindowActions>
   <WindowTitle>Customers</WindowTitle>
   <WindowContent>
@@ -27,19 +33,19 @@
                  PageSize="15"
                  OnRowClick="CustomerSelected">
       <GridColumns>
-        <TextGridColumn Field="@nameof(Customer.FirstName)" Width="200px" />
-        <TextGridColumn Field="@nameof(Customer.Surname)" Width="200px" />
+        <TextGridColumn Field="@nameof(CustomerDisplay.FirstName)" Width="200px" />
+        <TextGridColumn Field="@nameof(CustomerDisplay.Surname)" Width="200px" />
       </GridColumns>
     </TelerikGrid>
   </WindowContent>
 </TelerikWindow>
 
 @foreach (CustomerDisplay c in _customerWindows) {
-  <TelerikWindow Visible="c.Visible">
+  <TelerikWindow Visible="c.Visible" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary">
     <WindowActions>
       <WindowAction Name="Close" OnClick="@(() => _customerWindows.Remove(c))" />
     </WindowActions>
-    <WindowTitle>@c.FirstName @c.Surname</WindowTitle>
+    <WindowTitle><span class="@IconsHelper.Users me-1"></span> @c.FirstName @c.Surname</WindowTitle>
     <WindowContent>
       <table>
         <tr>
@@ -63,20 +69,58 @@
   </TelerikWindow>
 }
 
-<TelerikWindow Visible="@_charityListWindowVisible">
+<TelerikWindow Visible="@_charityListWindowVisible" Width="550px" ThemeColor="@ThemeConstants.Window.ThemeColor.Dark" Top="120px" Left="100px">
   <WindowActions>
     <WindowAction Name="Close" OnClick="@(() => _charityListWindowVisible = false)" />
   </WindowActions>
   <WindowTitle>Charities</WindowTitle>
   <WindowContent>
-    <p>TODO AYS - Charity list</p>
+    <TelerikGrid Data="@_charities"
+                 Pageable="true"
+                 PageSize="15"
+                 OnRowClick="CharitySelected">
+      <GridColumns>
+        <TextGridColumn Field="@nameof(CharityDisplay.Name)" Width="300px" />
+        <TextGridColumn Field="@nameof(CharityDisplay.Number)" Width="200px" />
+      </GridColumns>
+    </TelerikGrid>
   </WindowContent>
 </TelerikWindow>
 
+@foreach (CharityDisplay c in _charityWindows) {
+  <TelerikWindow Visible="c.Visible" ThemeColor="@ThemeConstants.Window.ThemeColor.Dark">
+    <WindowActions>
+      <WindowAction Name="Close" OnClick="@(() => _charityWindows.Remove(c))" />
+    </WindowActions>
+    <WindowTitle><span class="@IconsHelper.HandHoldingHeart me-1"></span> @c.Name</WindowTitle>
+    <WindowContent>
+      <table>
+        <tr>
+          <th>Number</th>
+          <td>@c.Number</td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>@c.Address</td>
+        </tr>
+        <tr>
+          <th>City</th>
+          <td>@c.City</td>
+        </tr>
+        <tr>
+          <th>Postcode</th>
+          <td>@c.Postcode</td>
+        </tr>
+      </table>
+    </WindowContent>
+  </TelerikWindow>
+}
+
 @code {
 
+  #region Customers
+
   private bool _customerListWindowVisible;
-  private bool _charityListWindowVisible;
 
   private readonly ObservableCollection<CustomerDisplay> _customers = Customers
     .Select(c => new CustomerDisplay(c.Id, c.FirstName, c.Surname, c.Email, c.Address, c.City, c.Postcode))
@@ -96,5 +140,31 @@
     await Task.Delay(100);
     customer.Visible = true;
   }
+
+  #endregion
+
+  #region Charities
+
+  private bool _charityListWindowVisible;
+
+  private readonly ObservableCollection<CharityDisplay> _charities = Charities
+    .Select(c => new CharityDisplay(c.Id, c.Name, c.Number, c.Address, c.City, c.Postcode))
+    .OrderBy(c => c.Name)
+    .ToObservableCollection();
+
+  private readonly ObservableCollection<CharityDisplay> _charityWindows = new();
+
+  private async Task CharitySelected(GridRowClickEventArgs args) {
+    CharityDisplay charity = args.Item as CharityDisplay ?? new(-1, "", "", "", "", "");
+    if (_charityWindows.All(c => c.Id != charity.Id)) {
+      _charityWindows.Add(charity);
+    }
+    charity.Visible = false;
+  // Get charity detail from the database
+    await Task.Delay(100);
+    charity.Visible = true;
+  }
+
+  #endregion
 
 }
