@@ -5,28 +5,42 @@
 
 <PageTitle>Layout 2</PageTitle>
 
-<TelerikSplitter Width="100%" Height="100%" Orientation="SplitterOrientation.Horizontal">
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+</style>
+
+<TelerikSplitter Height="100%" Orientation="SplitterOrientation.Horizontal">
   <SplitterPanes>
-    <SplitterPane Size="450px" Collapsible="false">
-      
-      <TelerikSplitter Orientation="SplitterOrientation.Vertical">
+    <SplitterPane Collapsible="false"
+                  Resizable="true"
+                  Size="450px">
+      <TelerikSplitter Orientation="SplitterOrientation.Vertical" Height="100%">
         <SplitterPanes>
           <SplitterPane>
             <h2>Customers</h2>
             <TelerikGrid Data="@_customers"
-                         Pageable="true"
-                         PageSize="15">
+                         Height="100%"
+                         PageSize="20"
+                         RowHeight="30"
+                         ScrollMode="@GridScrollMode.Virtual">
               <GridColumns>
                 <TextGridColumn Field="@nameof(CustomerDisplay.FirstName)" Width="200px" />
                 <TextGridColumn Field="@nameof(CustomerDisplay.Surname)" Width="200px" />
               </GridColumns>
             </TelerikGrid>
           </SplitterPane>
-          <SplitterPane>
+          <SplitterPane Resizable="true">
             <h2>Charities</h2>
             <TelerikGrid Data="@_charities"
-                         Pageable="true"
-                         PageSize="15">
+                         Height="100%"
+                         PageSize="20"
+                         RowHeight="30"
+                         ScrollMode="@GridScrollMode.Virtual">
               <GridColumns>
                 <TextGridColumn Field="@nameof(CharityDisplay.Name)" Width="300px" />
                 <TextGridColumn Field="@nameof(CharityDisplay.Number)" Width="200px" />
@@ -35,6 +49,7 @@
           </SplitterPane>
         </SplitterPanes>
       </TelerikSplitter>
+
     </SplitterPane>
 
     <SplitterPane Collapsible="false">
