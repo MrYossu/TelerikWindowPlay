@@ -6,18 +6,10 @@
 <PageTitle>Layout 1</PageTitle>
 
 <TelerikToolBar Adaptive="false">
-  <ToolBarButton OnClick="@(async () => {
-                            _customerListWindowVisible = false;
-                            await Task.Delay(1);
-                            _customerListWindowVisible = true;
-                          })">
+  <ToolBarButton OnClick="@(async () => { _customerListWindowVisible = false; await Task.Delay(1); _customerListWindowVisible = true; })">
     <span class="@IconsHelper.Users me-1"></span> Customers
   </ToolBarButton>
-  <ToolBarButton OnClick="@(async () => {
-                            _charityListWindowVisible = false; 
-                            await Task.Delay(1);
-                            _charityListWindowVisible = true;
-                          })">
+  <ToolBarButton OnClick="@(async () => { _charityListWindowVisible = false; await Task.Delay(1); _charityListWindowVisible = true; })">
     <span class="@IconsHelper.HandHoldingHeart me-1"></span> Charities
   </ToolBarButton>
 </TelerikToolBar>
@@ -40,8 +32,8 @@
   </WindowContent>
 </TelerikWindow>
 
-@foreach (CustomerDisplay c in _customerWindows) {
-  <TelerikWindow Visible="c.Visible" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary">
+@foreach (CustomerDisplay c in _customerWindows.Where(c => c.Visible)) {
+  <TelerikWindow Visible="true" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary" @bind-Top="@c.TopStr" @bind-Left="@c.LeftStr">
     <WindowActions>
       <WindowAction Name="Close" OnClick="@(() => _customerWindows.Remove(c))" />
     </WindowActions>
@@ -132,12 +124,13 @@
 
   private async Task CustomerSelected(GridRowClickEventArgs args) {
     CustomerDisplay customer = args.Item as CustomerDisplay ?? new(-1, "", "", "", "", "", "");
+    await Task.Delay(100);
     if (_customerWindows.All(c => c.Id != customer.Id)) {
       _customerWindows.Add(customer);
+      // Get customer detail from the database
+    } else {
+      customer.Visible = false;
     }
-    customer.Visible = false;
-  // Get customer detail from the database
-    await Task.Delay(100);
     customer.Visible = true;
   }
 
@@ -160,7 +153,7 @@
       _charityWindows.Add(charity);
     }
     charity.Visible = false;
-  // Get charity detail from the database
+    // Get charity detail from the database
     await Task.Delay(100);
     charity.Visible = true;
   }
