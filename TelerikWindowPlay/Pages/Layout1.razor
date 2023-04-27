@@ -1,7 +1,6 @@
 ﻿@page "/1"
-@using static TelerikWindowPlay.Data.DataService;
-@using Pixata.Extensions
-@using System.Collections.ObjectModel
+
+<!-- TODO AYS - Avoid memory leaks: https://blazor-university.com/javascript-interop/calling-dotnet-from-javascript/lifetimes-and-memory-leaks/ -->
 
 <PageTitle>Layout 1</PageTitle>
 
@@ -33,11 +32,11 @@
 </TelerikWindow>
 
 @foreach (CustomerDisplay c in _customerWindows.Where(c => c.Visible)) {
-  <TelerikWindow Visible="true" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary" @bind-Top="@c.TopStr" @bind-Left="@c.LeftStr">
+  <TelerikWindow Visible="true" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary" @bind-Top="@c.TopStr" @bind-Left="@c.LeftStr" Class="@($"customer-window-{c.Id}")">
     <WindowActions>
       <WindowAction Name="Close" OnClick="@(() => _customerWindows.Remove(c))" />
     </WindowActions>
-    <WindowTitle><span class="@IconsHelper.Users me-1"></span> @c.FirstName @c.Surname</WindowTitle>
+    <WindowTitle><span class="@IconsHelper.Users me-1"></span> @c.FirstName @c.Surname (@c.Id)</WindowTitle>
     <WindowContent>
       <table>
         <tr>
@@ -106,58 +105,4 @@
       </table>
     </WindowContent>
   </TelerikWindow>
-}
-
-@code {
-
-  #region Customers
-
-  private bool _customerListWindowVisible;
-
-  private readonly ObservableCollection<CustomerDisplay> _customers = Customers
-    .Select(c => new CustomerDisplay(c.Id, c.FirstName, c.Surname, c.Email, c.Address, c.City, c.Postcode))
-    .OrderBy(c => c.Surname)
-    .ThenBy(c => c.FirstName)
-    .ToObservableCollection();
-
-  private readonly ObservableCollection<CustomerDisplay> _customerWindows = new();
-
-  private async Task CustomerSelected(GridRowClickEventArgs args) {
-    CustomerDisplay customer = args.Item as CustomerDisplay ?? new(-1, "", "", "", "", "", "");
-    await Task.Delay(100);
-    if (_customerWindows.All(c => c.Id != customer.Id)) {
-      _customerWindows.Add(customer);
-      // Get customer detail from the database
-    } else {
-      customer.Visible = false;
-    }
-    customer.Visible = true;
-  }
-
-  #endregion
-
-  #region Charities
-
-  private bool _charityListWindowVisible;
-
-  private readonly ObservableCollection<CharityDisplay> _charities = Charities
-    .Select(c => new CharityDisplay(c.Id, c.Name, c.Number, c.Address, c.City, c.Postcode))
-    .OrderBy(c => c.Name)
-    .ToObservableCollection();
-
-  private readonly ObservableCollection<CharityDisplay> _charityWindows = new();
-
-  private async Task CharitySelected(GridRowClickEventArgs args) {
-    CharityDisplay charity = args.Item as CharityDisplay ?? new(-1, "", "", "", "", "");
-    if (_charityWindows.All(c => c.Id != charity.Id)) {
-      _charityWindows.Add(charity);
-    }
-    charity.Visible = false;
-    // Get charity detail from the database
-    await Task.Delay(100);
-    charity.Visible = true;
-  }
-
-  #endregion
-
 }
