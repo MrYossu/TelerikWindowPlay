@@ -21,10 +21,9 @@ public partial class Layout1 {
   private async Task CustomerSelected(GridRowClickEventArgs args) {
     CustomerDisplay customer = args.Item as CustomerDisplay ?? new(-1, "", "", "", "", "", "");
     if (_customerWindows.All(c => c.Id != customer.Id)) {
-      // TODO AYS - Load full details from the database
+      // TODO AYS - Load full details from the database. Maybe grab some random details from Bogus
     } else {
       _customerWindows.Remove(customer);
-      await Task.Delay(1);
     }
     _customerWindows.Add(customer);
     customer.Visible = true;
