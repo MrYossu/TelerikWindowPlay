@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Pixata.Extensions;
 using Telerik.Blazor.Components;
 using static TelerikWindowPlay.Data.DataService;
@@ -8,9 +6,6 @@ using static TelerikWindowPlay.Data.DataService;
 namespace TelerikWindowPlay.Pages;
 
 public partial class Layout1 {
-  [Inject]
-  public IJSRuntime Js { get; set; } = null!;
-
   #region Customers
 
   private bool _customerListWindowVisible;
@@ -26,11 +21,13 @@ public partial class Layout1 {
   private async Task CustomerSelected(GridRowClickEventArgs args) {
     CustomerDisplay customer = args.Item as CustomerDisplay ?? new(-1, "", "", "", "", "", "");
     if (_customerWindows.All(c => c.Id != customer.Id)) {
-      _customerWindows.Add(customer);
-      customer.Visible = true;
+      // TODO AYS - Load full details from the database
     } else {
-      await Js.InvokeVoidAsync("ShowWindow", $"customer-window-{customer.Id}");
+      _customerWindows.Remove(customer);
+      await Task.Delay(1);
     }
+    _customerWindows.Add(customer);
+    customer.Visible = true;
   }
 
   #endregion
