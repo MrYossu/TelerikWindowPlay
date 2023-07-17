@@ -1,7 +1,7 @@
 ﻿@inherits WindowBase
 @implements WindowParametersInterface
 
-<TelerikWindow Visible="@Visible" Top="@TopStr" Left="@LeftStr" Height="@HeightStr" Width="@WidthStr">
+<TelerikWindow Visible="@Visible" @bind-Top="@TopStr" @bind-Left="@LeftStr" @bind-Height="@HeightStr" @bind-Width="@WidthStr">
   <WindowActions>
     <WindowAction Name="Close" OnClick="@Close" />
   </WindowActions>
