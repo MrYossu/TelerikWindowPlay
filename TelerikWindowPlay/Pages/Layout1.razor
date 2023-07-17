@@ -5,7 +5,7 @@
 <PageTitle>Layout 1</PageTitle>
 
 <TelerikToolBar Adaptive="false">
-  <ToolBarButton OnClick="@(async () => { _customerListWindowVisible = false; await Task.Delay(1); _customerListWindowVisible = true; })">
+  <ToolBarButton OnClick="@ShowCustomerList">
     <span class="@IconsHelper.Users me-1"></span> Customers
   </ToolBarButton>
   <ToolBarButton OnClick="@(async () => { _charityListWindowVisible = false; await Task.Delay(1); _charityListWindowVisible = true; })">
@@ -13,9 +13,9 @@
   </ToolBarButton>
 </TelerikToolBar>
 
-<TelerikWindow Visible="@_customerListWindowVisible" Width="450px" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary" Top="60px" Left="30px">
+<TelerikWindow Visible="@_customerListWindowVisible" Width="450px" ThemeColor="@ThemeConstants.Window.ThemeColor.Primary" >
   <WindowActions>
-    <WindowAction Name="Close" OnClick="@(() => { _customerListWindowVisible = false; })" />
+    <WindowAction Name="Close" OnClick="@HideCustomerList" />
   </WindowActions>
   <WindowTitle>Customers</WindowTitle>
   <WindowContent>
@@ -60,7 +60,7 @@
   </TelerikWindow>
 }
 
-<TelerikWindow Visible="@_charityListWindowVisible" Width="550px" ThemeColor="@ThemeConstants.Window.ThemeColor.Dark" Top="120px" Left="100px">
+<TelerikWindow Visible="@_charityListWindowVisible" Width="550px" ThemeColor="@ThemeConstants.Window.ThemeColor.Dark" >
   <WindowActions>
     <WindowAction Name="Close" OnClick="@(() => _charityListWindowVisible = false)" />
   </WindowActions>

@@ -1,0 +1,32 @@
+﻿@page "/windows"
+
+<div class="page">
+  <NavMenu />
+
+  <main class="position-relative">
+    <TopRow />
+
+    <article class="content px-4 position-relative">
+      <TelerikToolBar Adaptive="false">
+        <ToolBarButton OnClick="@ShowDonorList">
+          <span class="@IconsHelper.Users me-1"></span> Donors
+        </ToolBarButton>
+        <ToolBarButton OnClick="@ShowCharityList">
+          <span class="@IconsHelper.HandHoldingHeart me-1"></span> Charities
+        </ToolBarButton>
+      </TelerikToolBar>
+
+      <p>Displayed types:</p>
+      <ul>
+        @foreach (WindowParameters w in Windows) {
+          <li>@w.Type.Name @(w.Id != "" ? $"({w.Id})" : "")</li>
+        }
+      </ul>
+
+      @foreach (WindowParameters w in Windows) {
+        <DynamicComponent Type="@w.Type" Parameters="@w.GetDictionary()" />
+      }
+
+    </article>
+  </main>
+</div>

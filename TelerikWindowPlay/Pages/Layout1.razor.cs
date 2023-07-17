@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Microsoft.AspNetCore.Components;
 using Pixata.Extensions;
 using Telerik.Blazor.Components;
 using static TelerikWindowPlay.Data.DataService;
@@ -6,6 +7,17 @@ using static TelerikWindowPlay.Data.DataService;
 namespace TelerikWindowPlay.Pages;
 
 public partial class Layout1 {
+  public ObservableCollection<DisplayInfo<ComponentBase>> Infos { get; set; } = new();
+
+  private async Task ShowCustomerList() {
+    _customerListWindowVisible = false;
+    await Task.Delay(1);
+    _customerListWindowVisible = true;
+  }
+
+  private void HideCustomerList() =>
+    _customerListWindowVisible = false;
+
   #region Customers
 
   private bool _customerListWindowVisible;
@@ -24,6 +36,7 @@ public partial class Layout1 {
       // TODO AYS - Load full details from the database. Maybe grab some random details from Bogus
     } else {
       _customerWindows.Remove(customer);
+      await Task.Delay(1);
     }
     _customerWindows.Add(customer);
     customer.Visible = true;

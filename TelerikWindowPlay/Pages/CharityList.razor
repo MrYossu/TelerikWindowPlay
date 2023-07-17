@@ -1,0 +1,26 @@
+﻿@inherits WindowBase
+@implements WindowParametersInterface
+
+<TelerikWindow Visible="@Visible" Top="@TopStr" Left="@LeftStr" Height="@HeightStr" Width="@WidthStr">
+  <WindowActions>
+    <WindowAction Name="Close" OnClick="@Close" />
+  </WindowActions>
+  <WindowTitle>Charities</WindowTitle>
+  <WindowContent>
+    <p>Pos: (@TopStr, @LeftStr), size: (@HeightStr, @WidthStr)</p>
+    <TelerikGrid Data="Charities"
+                 Class="border-0">
+      <GridColumns>
+        <GridColumn Field="@nameof(Charity.Id)" Width="70px" />
+        <GridColumn Field="@nameof(Charity.Name)" />
+        <GridColumn Field="@nameof(Charity.Address)" />
+      </GridColumns>
+    </TelerikGrid>
+  </WindowContent>
+</TelerikWindow>
+
+@code {
+  public static string Title = "Charities";
+
+  private List<Charity> Charities { get; } = DataService.Charities;
+}
