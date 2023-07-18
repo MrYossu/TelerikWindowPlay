@@ -1,13 +1,13 @@
 ﻿@inherits WindowBase
 @implements WindowParametersInterface
 
-<TelerikWindow Visible="@Visible" @bind-Top="@TopStr" @bind-Left="@LeftStr" @bind-Height="@HeightStr" @bind-Width="@WidthStr">
+<p>Pos: (@TopStr, @LeftStr), size: (@HeightStr, @WidthStr)</p>
+<TelerikWindow Visible="@Visible" Top="@TopStr" Left="@LeftStr" Height="@HeightStr" Width="@WidthStr" LeftChanged="@(s => WindowResized("L", $"{s}"))" HeightChanged="@(s => WindowResized("H", $"{s}"))" TopChanged="@(s => WindowResized("T", $"{s}"))" WidthChanged="@(s => WindowResized("W", $"{s}"))">
   <WindowActions>
     <WindowAction Name="Close" OnClick="@Close" />
   </WindowActions>
   <WindowTitle>Donors</WindowTitle>
   <WindowContent>
-    <p>Pos: (@TopStr, @LeftStr), size: (@HeightStr, @WidthStr)</p>
     <TelerikGrid Data="Donors"
                  Class="border-0">
       <GridColumns>
@@ -21,12 +21,6 @@
 
 @code {
 
-  private List<Customer> Donors { get; } = DataService.Customers;
-
-  protected override void OnParametersSet() {
-    Console.WriteLine("DonorList.OnParametersSet");
-    Console.WriteLine($"  TopStr: {TopStr}");
-    Console.WriteLine($"  LeftStr: {LeftStr}");
-  }
+  private List<Customer> Donors { get; } = DataService.Customers.Take(20).ToList();
 
 }

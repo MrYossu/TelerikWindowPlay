@@ -3,9 +3,10 @@
 namespace TelerikWindowPlay.Pages;
 
 public class WindowParameters : WindowParametersInterface {
-  public WindowParameters(WindowManager windowManager, Type type, string id, Action<(Type type, string id)> onClose) {
+  public WindowParameters(WindowManager windowManager, Type type, string id, Action<(Type, string, string, string)> onWindowResized, Action<(Type type, string id)> onClose) {
     Type = type;
     Id = id;
+    OnWindowResized = EventCallback.Factory.Create<(Type, string, string, string)>(windowManager, onWindowResized);
     OnClose = EventCallback.Factory.Create<(Type, string)>(windowManager, onClose);
   }
 
@@ -19,8 +20,10 @@ public class WindowParameters : WindowParametersInterface {
     Visible = true;
   }
 
+  public EventCallback<(Type, string, string, string)> OnWindowResized { get; set; }
   public EventCallback<(Type, string)> OnClose { get; set; }
 
+  // TODO AYS - These should all be plain props, no need to convert to/from an int
   private int _top = 500;
 
   public string TopStr {
