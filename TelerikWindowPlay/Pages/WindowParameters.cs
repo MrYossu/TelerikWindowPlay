@@ -16,7 +16,7 @@ public class WindowParameters : WindowParametersInterface {
 
   public async Task ToFront() {
     Visible = false;
-    await Task.Delay(10);
+    await Task.Delay(1);
     Visible = true;
   }
 
@@ -26,28 +26,28 @@ public class WindowParameters : WindowParametersInterface {
   // TODO AYS - These should all be plain props, no need to convert to/from an int
   private int _top = 500;
 
-  public string TopStr {
+  public string Top {
     set => _top = Convert.ToInt32(value.Replace("px", ""));
     get => $"{_top}px";
   }
 
   private int _left = 500;
 
-  public string LeftStr {
+  public string Left {
     set => _left = Convert.ToInt32(value.Replace("px", ""));
     get => $"{_left}px";
   }
 
   private int _width = 500;
 
-  public string WidthStr {
+  public string Width {
     set => _width = Convert.ToInt32(value.Replace("px", ""));
     get => $"{_width}px";
   }
 
   private int _height = 500;
 
-  public string HeightStr {
+  public string Height {
     set => _height = Convert.ToInt32(value.Replace("px", ""));
     get => $"{_height}px";
   }

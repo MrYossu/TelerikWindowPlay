@@ -7,10 +7,10 @@ public partial class WindowManager {
 
   private async Task ShowDonorList() =>
     await Open(typeof(DonorList), new(this, typeof(DonorList), "", WindowResized, Close) {
-      TopStr = "300px",
-      LeftStr = "700px",
-      HeightStr = "300px",
-      WidthStr = "600px"
+      Top = "300px",
+      Left = "700px",
+      Height = "300px",
+      Width = "600px"
     });
 
   private async Task ShowCharityList() =>
@@ -26,21 +26,20 @@ public partial class WindowManager {
   }
 
   private void WindowResized((Type type, string id, string att, string value) data) {
-    Console.WriteLine($"Window of type {data.type.Name} with Id {data.id} has had the {data.att} attribute changed to {data.value}");
     WindowParameters? wp = Windows.SingleOrDefault(i => i.Type == data.type && data.id == i.Id);
     if (wp is not null) {
       switch (data.att) {
         case "T":
-          wp.TopStr = data.value;
+          wp.Top = data.value;
           break;
         case "L":
-          wp.LeftStr = data.value;
+          wp.Left = data.value;
           break;
         case "W":
-          wp.WidthStr = data.value;
+          wp.Width = data.value;
           break;
         case "H":
-          wp.HeightStr = data.value;
+          wp.Height = data.value;
           break;
       }
     } else {

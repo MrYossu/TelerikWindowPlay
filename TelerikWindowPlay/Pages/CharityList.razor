@@ -1,13 +1,12 @@
 ﻿@inherits WindowBase
-@implements WindowParametersInterface
 
-<TelerikWindow Visible="@Visible" @bind-Top="@Top" @bind-Left="@Left" @bind-Height="@Height" @bind-Width="@Width">
+<TelerikWindow Visible="@Visible" Top="@Top" Left="@Left" Height="@Height" Width="@Width" LeftChanged="@(s => WindowResized("L", $"{s}"))" HeightChanged="@(s => WindowResized("H", $"{s}"))" TopChanged="@(s => WindowResized("T", $"{s}"))" WidthChanged="@(s => WindowResized("W", $"{s}"))">
   <WindowActions>
     <WindowAction Name="Close" OnClick="@Close" />
   </WindowActions>
   <WindowTitle>Charities</WindowTitle>
   <WindowContent>
-    <p>Pos: (@TopStr, @LeftStr), size: (@HeightStr, @WidthStr)</p>
+    <p>Pos: (@Top, @Left), size: (@Height, @Width)</p>
     <TelerikGrid Data="Charities"
                  Class="border-0">
       <GridColumns>
