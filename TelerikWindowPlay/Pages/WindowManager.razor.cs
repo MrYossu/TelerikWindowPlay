@@ -25,20 +25,20 @@ public partial class WindowManager {
     }
   }
 
-  private void WindowResized((Type type, string id, string att, string value) data) {
+  private void WindowResized((Type type, string id, WindowAttribute att, string value) data) {
     WindowParameters? wp = Windows.SingleOrDefault(i => i.Type == data.type && data.id == i.Id);
     if (wp is not null) {
       switch (data.att) {
-        case "T":
+        case WindowAttribute.Top:
           wp.Top = data.value;
           break;
-        case "L":
+        case WindowAttribute.Left:
           wp.Left = data.value;
           break;
-        case "W":
+        case WindowAttribute.Width:
           wp.Width = data.value;
           break;
-        case "H":
+        case WindowAttribute.Height:
           wp.Height = data.value;
           break;
       }

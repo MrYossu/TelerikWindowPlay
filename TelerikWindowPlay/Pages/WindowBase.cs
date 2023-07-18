@@ -26,9 +26,10 @@ public class WindowBase : ComponentBase, WindowParametersInterface {
 
   [Parameter]
   // Raised whenever a window is moved or resized. Sends the window type, Id, parameter that changed (left, top, width or height) and the new value
-  public EventCallback<(Type, string, string, string)> OnWindowResized { get; set; }
+  public EventCallback<(Type, string, WindowAttribute, string)> OnWindowResized { get; set; }
 
-  public async Task WindowResized(string att, string value) =>
+  // TODO AYS - Would be better if this took an enum for the attribute
+  public async Task WindowResized(WindowAttribute att, string value) =>
     await OnWindowResized.InvokeAsync((GetType(), Id, att, value));
 
   [Parameter]

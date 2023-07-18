@@ -9,6 +9,6 @@ public interface WindowParametersInterface {
   string Left { get; set; }
   string Width { get; set; }
   string Height { get; set; }
-  EventCallback<(Type, string, string, string)> OnWindowResized { get; set; }
+  EventCallback<(Type, string, WindowAttribute, string)> OnWindowResized { get; set; }
   EventCallback<(Type, string)> OnClose { get; set; }
 }

@@ -3,10 +3,10 @@
 namespace TelerikWindowPlay.Pages;
 
 public class WindowParameters : WindowParametersInterface {
-  public WindowParameters(WindowManager windowManager, Type type, string id, Action<(Type, string, string, string)> onWindowResized, Action<(Type type, string id)> onClose) {
+  public WindowParameters(WindowManager windowManager, Type type, string id, Action<(Type, string, WindowAttribute, string)> onWindowResized, Action<(Type type, string id)> onClose) {
     Type = type;
     Id = id;
-    OnWindowResized = EventCallback.Factory.Create<(Type, string, string, string)>(windowManager, onWindowResized);
+    OnWindowResized = EventCallback.Factory.Create<(Type, string, WindowAttribute, string)>(windowManager, onWindowResized);
     OnClose = EventCallback.Factory.Create<(Type, string)>(windowManager, onClose);
   }
 
@@ -20,7 +20,7 @@ public class WindowParameters : WindowParametersInterface {
     Visible = true;
   }
 
-  public EventCallback<(Type, string, string, string)> OnWindowResized { get; set; }
+  public EventCallback<(Type, string, WindowAttribute, string)> OnWindowResized { get; set; }
   public EventCallback<(Type, string)> OnClose { get; set; }
 
   public string Top { get; set; }
