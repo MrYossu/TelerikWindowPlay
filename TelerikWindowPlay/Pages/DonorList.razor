@@ -1,6 +1,5 @@
 ﻿@inherits WindowBase
 
-<p>Pos: (@Top, @Left), size: (@Height, @Width)</p>
 <TelerikWindow Visible="@Visible" Top="@Top" Left="@Left" Height="@Height" Width="@Width" LeftChanged="@(s => WindowResized("L", $"{s}"))" HeightChanged="@(s => WindowResized("H", $"{s}"))" TopChanged="@(s => WindowResized("T", $"{s}"))" WidthChanged="@(s => WindowResized("W", $"{s}"))">
   <WindowActions>
     <WindowAction Name="Close" OnClick="@Close" />

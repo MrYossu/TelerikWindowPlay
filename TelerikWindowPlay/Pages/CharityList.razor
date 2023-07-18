@@ -6,7 +6,6 @@
   </WindowActions>
   <WindowTitle>Charities</WindowTitle>
   <WindowContent>
-    <p>Pos: (@Top, @Left), size: (@Height, @Width)</p>
     <TelerikGrid Data="Charities"
                  Class="border-0">
       <GridColumns>
@@ -21,5 +20,5 @@
 @code {
   public static string Title = "Charities";
 
-  private List<Charity> Charities { get; } = DataService.Charities;
+  private List<Charity> Charities { get; } = DataService.Charities.Take(20).ToList();
 }

@@ -23,34 +23,10 @@ public class WindowParameters : WindowParametersInterface {
   public EventCallback<(Type, string, string, string)> OnWindowResized { get; set; }
   public EventCallback<(Type, string)> OnClose { get; set; }
 
-  // TODO AYS - These should all be plain props, no need to convert to/from an int
-  private int _top = 500;
-
-  public string Top {
-    set => _top = Convert.ToInt32(value.Replace("px", ""));
-    get => $"{_top}px";
-  }
-
-  private int _left = 500;
-
-  public string Left {
-    set => _left = Convert.ToInt32(value.Replace("px", ""));
-    get => $"{_left}px";
-  }
-
-  private int _width = 500;
-
-  public string Width {
-    set => _width = Convert.ToInt32(value.Replace("px", ""));
-    get => $"{_width}px";
-  }
-
-  private int _height = 500;
-
-  public string Height {
-    set => _height = Convert.ToInt32(value.Replace("px", ""));
-    get => $"{_height}px";
-  }
+  public string Top { get; set; }
+  public string Left { get; set; }
+  public string Width { get; set; }
+  public string Height { get; set; }
 
   public Dictionary<string, object> GetDictionary() =>
     GetType().GetProperties().ToDictionary(property => property.Name, property => property.GetValue(this)!);
