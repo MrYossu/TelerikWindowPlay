@@ -1,4 +1,5 @@
-﻿@inherits WindowBase
+﻿@using System.Collections.ObjectModel
+@inherits WindowBase
 
 <TelerikWindow Visible="@Visible"
                Top="@Top"
@@ -13,7 +14,7 @@
     <WindowAction Name="Minimize" />
     <WindowAction Name="Close" OnClick="@Close" />
   </WindowActions>
-  <WindowTitle>Charity details</WindowTitle>
+  <WindowTitle>Charity details - @Charity.Name</WindowTitle>
   <WindowContent>
     <div class="p-3">
       @if (Charity is null) {
@@ -21,28 +22,54 @@
         <p>Sorry, that charity cannot be found</p>
         <p>Id: @Id</p>
       } else {
-        <table class="table">
-          <tr>
-            <td>Name</td>
-            <td>@Charity.Name</td>
-          </tr>
-          <tr>
-            <td>CharityNumber</td>
-            <td>@Charity.Number</td>
-          </tr>
-          <tr>
-            <td>Address</td>
-            <td>@Charity.Address</td>
-          </tr>
-          <tr>
-            <td>Telephone</td>
-            <td>@Charity.City</td>
-          </tr>
-          <tr>
-            <td>Email</td>
-            <td>@Charity.Postcode</td>
-          </tr>
-        </table>
+        <TelerikTabStrip>
+          <TabStripTab Title="Details">
+            <table class="table">
+              <tr>
+                <td>Name</td>
+                <td>@Charity.Name</td>
+              </tr>
+              <tr>
+                <td>CharityNumber</td>
+                <td>@Charity.Number</td>
+              </tr>
+              <tr>
+                <td>Address</td>
+                <td>@Charity.Address</td>
+              </tr>
+              <tr>
+                <td>Postcode</td>
+                <td>@Charity.Postcode</td>
+              </tr>
+              <tr>
+                <td>City</td>
+                <td>@Charity.City</td>
+              </tr>
+            </table>
+          </TabStripTab>
+          <TabStripTab Title="Accounts">
+            <TelerikGrid Data="@_accounts"
+                         EditMode="@GridEditMode.Popup"
+                         OnUpdate=@UpdateItem
+                         OnDelete=@DeleteItem
+                         OnCreate=@CreateItem
+                         Class="telerik-grid">
+              <GridToolBarTemplate>
+                <GridCommandButton Command="Add" Icon="@IconsHelper.Plus">New</GridCommandButton>
+              </GridToolBarTemplate>
+              <GridColumns>
+                <GridColumn Field="@nameof(CharityBankAccount.Bank)" />
+                <GridColumn Field="@nameof(CharityBankAccount.AccountName)" Title="Account name" />
+                <GridColumn Field="@nameof(CharityBankAccount.Number)" />
+                <GridColumn Field="@nameof(CharityBankAccount.SortCode)" />
+                <GridCommandColumn Width="55px">
+                  <GridCommandButton Command="Edit" Icon="@IconsHelper.Edit" ThemeColor="@ThemeConstants.Button.ThemeColor.Primary" />
+                </GridCommandColumn>
+              </GridColumns>
+            </TelerikGrid>
+          </TabStripTab>
+          <TabStripTab Title="Compliance"></TabStripTab>
+        </TelerikTabStrip>
       }
     </div>
   </WindowContent>
@@ -54,5 +81,44 @@
 
   protected override void LoadData() => 
     Charity = DataService.Charities.SingleOrDefault(c => c.Id.ToString() == Id);
+
+  private void CreateItem(GridCommandEventArgs args) =>
+    _accounts.Add((CharityBankAccount)args.Item);
+
+  private void DeleteItem(GridCommandEventArgs args) =>
+    _accounts.Remove((CharityBankAccount)args.Item);
+
+  private void UpdateItem(GridCommandEventArgs args) {
+    // TODO AYS - Update
+  }
+
+  // For testing only
+  private class CharityBankAccount {
+    public string Bank { get; set; } = "";
+    public string AccountName { get; set; } = "";
+    public string Number { get; set; } = "";
+    public string SortCode { get; set; } = "";
+  }
+
+  private readonly ObservableCollection<CharityBankAccount> _accounts = new() {
+    new() {
+      Bank = "NatWest",
+      AccountName = "Main",
+      Number = "123456789",
+      SortCode = "11-00-22"
+    },
+    new() {
+      Bank = "NatWest",
+      AccountName = "Reserve",
+      Number = "6547821332",
+      SortCode = "11-00-22"
+    },
+    new() {
+      Bank = "Lloyds",
+      AccountName = "Main",
+      Number = "541258954",
+      SortCode = "54-95-74"
+    },
+  };
 
 }
