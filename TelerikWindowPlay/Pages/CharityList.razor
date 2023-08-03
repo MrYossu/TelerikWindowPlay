@@ -1,12 +1,22 @@
 ﻿@inherits WindowBase
 
-<TelerikWindow Visible="@Visible" Top="@Top" Left="@Left" Height="@Height" Width="@Width" LeftChanged="@(s => WindowResized(WindowAttribute.Left, $"{s}"))" HeightChanged="@(s => WindowResized(WindowAttribute.Height, $"{s}"))" TopChanged="@(s => WindowResized(WindowAttribute.Top, $"{s}"))" WidthChanged="@(s => WindowResized(WindowAttribute.Width, $"{s}"))">
+<TelerikWindow Visible="@Visible"
+               Top="@Top"
+               Left="@Left"
+               Height="@Height"
+               Width="@Width"
+               LeftChanged="@(s => WindowResized(WindowAttribute.Left, $"{s}"))"
+               HeightChanged="@(s => WindowResized(WindowAttribute.Height, $"{s}"))"
+               TopChanged="@(s => WindowResized(WindowAttribute.Top, $"{s}"))"
+               WidthChanged="@(s => WindowResized(WindowAttribute.Width, $"{s}"))">
   <WindowActions>
+    <WindowAction Name="Minimize" />
     <WindowAction Name="Close" OnClick="@Close" />
   </WindowActions>
   <WindowTitle>Charities</WindowTitle>
   <WindowContent>
     <TelerikGrid Data="Charities"
+                 OnRowClick="RowClicked"
                  Class="border-0">
       <GridColumns>
         <GridColumn Field="@nameof(Charity.Id)" Width="70px" />
@@ -21,4 +31,8 @@
   public static string Title = "Charities";
 
   private List<Charity> Charities { get; } = DataService.Charities.Take(20).ToList();
+
+  private async Task RowClicked(GridRowClickEventArgs args) =>
+    await OpenAnotherWindow(typeof(CharityDetails), ((Charity)args.Item).Id.ToString());
+
 }

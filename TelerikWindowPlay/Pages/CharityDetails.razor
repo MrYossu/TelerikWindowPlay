@@ -1,0 +1,58 @@
+﻿@inherits WindowBase
+
+<TelerikWindow Visible="@Visible"
+               Top="@Top"
+               Left="@Left"
+               Height="@Height"
+               Width="@Width"
+               LeftChanged="@(s => WindowResized(WindowAttribute.Left, $"{s}"))"
+               HeightChanged="@(s => WindowResized(WindowAttribute.Height, $"{s}"))"
+               TopChanged="@(s => WindowResized(WindowAttribute.Top, $"{s}"))"
+               WidthChanged="@(s => WindowResized(WindowAttribute.Width, $"{s}"))">
+  <WindowActions>
+    <WindowAction Name="Minimize" />
+    <WindowAction Name="Close" OnClick="@Close" />
+  </WindowActions>
+  <WindowTitle>Charity details</WindowTitle>
+  <WindowContent>
+    <div class="p-3">
+      @if (Charity is null) {
+        <h1>Big flop</h1>
+        <p>Sorry, that charity cannot be found</p>
+        <p>Id: @Id</p>
+      } else {
+        <table class="table">
+          <tr>
+            <td>Name</td>
+            <td>@Charity.Name</td>
+          </tr>
+          <tr>
+            <td>CharityNumber</td>
+            <td>@Charity.Number</td>
+          </tr>
+          <tr>
+            <td>Address</td>
+            <td>@Charity.Address</td>
+          </tr>
+          <tr>
+            <td>Telephone</td>
+            <td>@Charity.City</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>@Charity.Postcode</td>
+          </tr>
+        </table>
+      }
+    </div>
+  </WindowContent>
+</TelerikWindow>
+
+@code {
+
+  private Charity? Charity { get; set; }
+
+  protected override void LoadData() => 
+    Charity = DataService.Charities.SingleOrDefault(c => c.Id.ToString() == Id);
+
+}

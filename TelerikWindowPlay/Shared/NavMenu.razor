@@ -1,36 +1,68 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="">Safyr Inspires Play</a>
-    <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+﻿@using TelerikWindowPlay.Pages
+<div class="sidebar @PinCssClass">
+  <div class="navbar">
+    <div class="container-fluid">
+      <button class="btn rounded-circle unpin d-none" @onclick="TogglePin" style="@(_pinNavMenu ? "" : "transform: rotate(180deg);")">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bar-to-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: #262a2e;">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <line x1="10" y1="12" x2="20" y2="12"></line>
+          <line x1="10" y1="12" x2="14" y2="16"></line>
+          <line x1="10" y1="12" x2="14" y2="8"></line>
+          <line x1="4" y1="4" x2="4" y2="20"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-scrollable">
+    <nav class="flex-column" style="padding: 1.5rem;">
+      <div class="expander">
+        <div class="nav-item@(DropDownId == "donors" ? " expanded" : "")">
+          <div @onclick="@(async () => await OpenWindow.InvokeAsync(typeof(DonorList)))">
+            <i class="@IconsHelper.Donors"></i>
+            <span>Donors</span>
+          </div>
+          <div @onclick="@(() => SetDropDownId("donors"))">
+            <i class="@(DropDownId == "donors" ? IconsHelper.ChevronUp : IconsHelper.ChevronDown)"></i>
+          </div>
+        </div>
+        <div class="drop-down-items fs-7 @(DropDownId == "donors" ? "" : "hide")">
+          <div class="dd-item">Add donor</div>
+          <div class="dd-item">Deleted donors</div>
+        </div>
+      </div>
+      <div class="expander">
+        <div class="nav-item@(DropDownId == "charities" ? " expanded" : "")">
+          <div @onclick="@(async () => await OpenWindow.InvokeAsync(typeof(CharityList)))">
+            <i class="@IconsHelper.Charities"></i>
+            <span>Charities</span>
+          </div>
+          <div @onclick="@(() => SetDropDownId("charities"))">
+            <i class="@(DropDownId == "charities" ? IconsHelper.ChevronUp : IconsHelper.ChevronDown)"></i>
+          </div>
+        </div>
+        <div class="drop-down-items fs-7 @(DropDownId == "charities" ? "" : "hide")">
+          <div class="dd-item">Add charity</div>
+        </div>
+      </div>
+      <div class="expander">
+        <div class="nav-item@(DropDownId == "vouchers" ? " expanded" : "")">
+          <div @onclick="@(async () => await OpenWindow.InvokeAsync(typeof(DonorList)))">
+            <i class="@IconsHelper.Vouchers"></i>
+            <span>Vouchers</span>
+          </div>
+          <div @onclick="@(() => SetDropDownId("vouchers"))">
+            <i class="@(DropDownId == "vouchers" ? IconsHelper.ChevronUp : IconsHelper.ChevronDown)"></i>
+          </div>
+        </div>
+        <div class="drop-down-items fs-7 @(DropDownId == "vouchers" ? "" : "hide")">
+          <div class="dd-item">Process vouchers</div>
+          <div class="dd-item">Held vouchers</div>
+          <div class="dd-item">Returned vouchers</div>
+          <div class="dd-item">Voucher books</div>
+          <div class="dd-item">Block a voucher</div>
+        </div>
+      </div>
+    </nav>
   </div>
 </div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-  <nav class="flex-column">
-    <div class="nav-item px-3">
-      <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-        <span class="oi oi-home" aria-hidden="true"></span> Home
-      </NavLink>
-    </div>
-    <div class="nav-item px-3">
-      <NavLink class="nav-link" href="counter">
-        <span class="oi oi-plus" aria-hidden="true"></span> Counter
-      </NavLink>
-    </div>
-    <div class="nav-item px-3">
-      <NavLink class="nav-link" href="fetchdata">
-        <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-      </NavLink>
-    </div>
-  </nav>
-</div>
-
-@code {
-  private bool collapseNavMenu = true;
-
-  private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-  private void ToggleNavMenu() => collapseNavMenu = !collapseNavMenu;
-}

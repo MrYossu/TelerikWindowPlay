@@ -1,4 +1,4 @@
-using TelerikWindowPlay.Data;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddTelerikBlazor();
+builder.Services.AddBlazoredLocalStorage();
 
 var app = builder.Build();
 

@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Pixata.Extensions" Version="1.24.0" />
     <PackageReference Include="Telerik.UI.for.Blazor" Version="4.1.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
