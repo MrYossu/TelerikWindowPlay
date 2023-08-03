@@ -57,8 +57,6 @@ public class WindowBase : ComponentBase, WindowParametersInterface {
   [Parameter]
   public EventCallback<(Type, string)> OnOpenAnotherWindow { get; set; }
 
-  public async Task OpenAnotherWindow(Type type, string id) {
-    Console.WriteLine($"WindowBase.OpenAnotherWindow({type.Name}, {id})");
+  public async Task OpenAnotherWindow(Type type, string id) =>
     await OnOpenAnotherWindow.InvokeAsync((type, id));
-  }
 }

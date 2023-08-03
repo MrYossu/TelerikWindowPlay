@@ -75,7 +75,6 @@ public partial class WindowManager {
     Open(new(this, data.type, data.id, WindowResized, Close, OpenAnotherWindow));
 
   private async Task OpenAnotherWindow(WindowParameters wp) {
-    Console.WriteLine($"WindowManager.OpenAnotherWindow({wp.Type.Name}, {wp.Id})");
     wp.OnWindowResized = EventCallback.Factory.Create<(Type, string, WindowAttribute, string)>(this, WindowResized);
     wp.OnClose = EventCallback.Factory.Create<(Type, string)>(this, Close);
     wp.OnOpenAnotherWindow = EventCallback.Factory.Create<(Type, string)>(this, OpenAnotherWindow);
